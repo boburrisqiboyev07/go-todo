@@ -1,8 +1,17 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+
+	"github.com/boburrisqiboyev07/go-todo.git/package/service"
+
+)
 
 type Handler struct {
+	services *service.Service
+}
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -16,18 +25,18 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		lists := api.Group("/lists")
 		{
-			lists.POST("/",h.createList)
+			lists.POST("/", h.createList)
 			lists.GET("/", h.getAllList)
 			lists.GET("/:id", h.GetListById)
-			lists.PUT("/:id",h.updateList)
-			lists.DELETE("/:id",h.deleteList)
+			lists.PUT("/:id", h.updateList)
+			lists.DELETE("/:id", h.deleteList)
 			items := lists.Group("/:id/")
 			{
 				items.POST(":id/", h.createItem)
-				items.GET("/",h.getAllItems)
-				items.GET("/:item_id",h.GetItemById)
-				items.PUT("/:item_id",h.updateItem)
-				items.DELETE("/:item_id",h.deleteItem)
+				items.GET("/", h.getAllItems)
+				items.GET("/:item_id", h.GetItemById)
+				items.PUT("/:item_id", h.updateItem)
+				items.DELETE("/:item_id", h.deleteItem)
 			}
 		}
 	}
